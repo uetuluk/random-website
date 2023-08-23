@@ -34,25 +34,23 @@
             document.getElementById('inputSection').style.display = 'block';
         }
 
-        // Extract websites from the Caddyfile format
-        function extractWebsitesFromCaddyfile(input) {
-            const match = input.match(/reverse_proxy \* {[^]*?to ([^]*?)}/);
-            if (match && match[1]) {
-                return match[1].trim().split(/\s+/);
+        // Extract websites from either a plain list or a Caddyfile format
+        function extractWebsites(input) {
+            if (input.includes("reverse_proxy")) {
+                const match = input.match(/reverse_proxy \* {[^]*?to ([^]*?)}/);
+                if (match && match[1]) {
+                    return match[1].trim().split(/\s+/);
+                }
+                return [];
+            } else {
+                return input.split('\n');
             }
-            return [];
         }
 
         // Select a random website from the list and display it
         function selectRandomWebsite() {
             const textareaValue = document.getElementById('websiteList').value.trim();
-            let websites = [];
-
-            if (textareaValue.includes("reverse_proxy")) {
-                websites = extractWebsitesFromCaddyfile(textareaValue);
-            } else {
-                websites = textareaValue.split('\n');
-            }
+            const websites = extractWebsites(textareaValue);
 
             if (websites.length > 0) {
                 const randomWebsite = websites[Math.floor(Math.random() * websites.length)];
@@ -65,7 +63,8 @@
         // Generate the share link
         function generateShareLink() {
             const textareaValue = document.getElementById('websiteList').value.trim();
-            const encodedWebsites = encodeURIComponent(textareaValue);
+            const websites = extractWebsites(textareaValue);
+            const encodedWebsites = encodeURIComponent(websites.join('\n'));
             const currentURL = window.location.href.split('?')[0];
             const shareURL = `${currentURL}?websites=${encodedWebsites}`;
 
