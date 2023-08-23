@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Website Picker</title>
+    <style>
+        #inputSection {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Random Website Picker</h1>
+
+    <div id="inputSection">
+        <textarea id="websiteList" rows="10" cols="50"></textarea><br>
+        <button onclick="selectRandomWebsite()">Select Random Website</button><br><br>
+        <button onclick="generateShareLink()">Generate Share Link</button>
+        <p id="shareLink"></p>
+    </div>
+    <p id="selectedWebsite"></p>
+
+    <script>
+        // Check for 'websites' query parameter and decide what to show
+        const urlParams = new URLSearchParams(window.location.search);
+        const websites = urlParams.get('websites');
+        if (websites) {
+            document.getElementById('websiteList').value = decodeURIComponent(websites);
+            selectRandomWebsite();
+        } else {
+            document.getElementById('inputSection').style.display = 'block';
+        }
+
+        // Select a random website from the list and display it
+        function selectRandomWebsite() {
+            const textareaValue = document.getElementById('websiteList').value.trim();
+            const websites = textareaValue.split('\n');
+
+            if (websites.length > 0) {
+                const randomWebsite = websites[Math.floor(Math.random() * websites.length)];
+                document.getElementById('selectedWebsite').innerHTML = `Selected website: <a href="${randomWebsite}" target="_blank">${randomWebsite}</a>`;
+            } else {
+                alert('No websites in the list!');
+            }
+        }
+
+        // Generate the share link
+        function generateShareLink() {
+            const textareaValue = document.getElementById('websiteList').value.trim();
+            const encodedWebsites = encodeURIComponent(textareaValue);
+            const currentURL = window.location.href.split('?')[0];
+            const shareURL = `${currentURL}?websites=${encodedWebsites}`;
+
+            const shareLinkElement = document.getElementById('shareLink');
+            shareLinkElement.innerHTML = `<a href="${shareURL}" target="_blank">${shareURL}</a>`;
+        }
+    </script>
+</body>
+
+</html>
