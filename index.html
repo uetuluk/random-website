@@ -4,22 +4,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Random Website Picker</title>
-    <style>
-        #inputSection {
-            display: none;
-        }
-    </style>
+    <title>Stable Diffusion Mirror Picker</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <h1>Random Website Picker</h1>
+    <h1>Stable Diffusion Mirror Picker</h1>
 
     <div id="inputSection">
-        <textarea id="websiteList" rows="10" cols="50"></textarea><br>
-        <button onclick="selectRandomWebsite()">Select Random Website</button><br><br>
-        <button onclick="generateShareLink()">Generate Share Link</button>
-        <p id="shareLink"></p>
+        <div class="websiteListContainer">
+            <textarea id="websiteList" rows="10" cols="50"></textarea><br>
+        </div>
+        <div>
+            <button onclick="selectRandomWebsite()">Select Random Website</button><br><br>
+            <button onclick="generateShareLink()">Generate Share Link</button>
+            <p id="shareLink"></p>
+        </div>
     </div>
     <p id="selectedWebsite"></p>
 
@@ -54,7 +54,7 @@
 
             if (websites.length > 0) {
                 const randomWebsite = websites[Math.floor(Math.random() * websites.length)];
-                document.getElementById('selectedWebsite').innerHTML = `Selected website: <a href="${randomWebsite}" target="_blank">${randomWebsite}</a>`;
+                document.getElementById('selectedWebsite').innerHTML = `Selected mirror: <a href="${randomWebsite}" target="_blank">${randomWebsite}</a>`;
             } else {
                 alert('No websites in the list!');
             }
